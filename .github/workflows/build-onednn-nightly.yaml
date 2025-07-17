@@ -22,7 +22,7 @@ jobs:
           sudo apt-get install -y \
             git cmake ninja-build build-essential \
             python3 python3-pip scons \
-            opencl-headers ocl-icd-opencl-dev half
+            opencl-headers ocl-icd-opencl-dev
 
       - name: Build Arm Compute Library (NEON + OpenCL)
         run: |
@@ -47,6 +47,7 @@ jobs:
             -DCMAKE_INSTALL_PREFIX=/opt/onednn-acl-install \
             -DDNNL_CPU_RUNTIME=OMP \
             -DACL_INCLUDE_DIR=../../ComputeLibrary/include/ \
+            -DACL_EXTRA_INCLUDE_DIR=../../ComputeLibrary/include/ \
             -DACL_LIBRARY=../../ComputeLibrary/libarm_compute.a \
             -DDNNL_GPU_RUNTIME=OCL \
             -DDNNL_AARCH64_USE_ACL=ON \
