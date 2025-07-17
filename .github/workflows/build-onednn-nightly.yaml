@@ -34,12 +34,7 @@ jobs:
                 neon=1 \
                 embed_kernels=1 \
                 Werror=0 -j$(nproc)
-          ls .
-          ls src
-          ls src/core
-
-
-          cp src/core/arm_compute_version.embed include/arm_compute_version.embed
+          ls build
           cd ..
 
       - name: Build oneDNN with ACL backend
