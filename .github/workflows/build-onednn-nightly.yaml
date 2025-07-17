@@ -46,7 +46,7 @@ jobs:
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_INSTALL_PREFIX=/opt/onednn-acl-install \
             -DDNNL_CPU_RUNTIME=OMP \
-            -DACL_ROOT_DIR=../../ComputeLibrary/ \
+            -DACL_ROOT_DIR=../../ComputeLibrary/build/ \
             -DDNNL_GPU_RUNTIME=OCL \
             -DDNNL_AARCH64_USE_ACL=ON \
             -DDNNL_ENABLE_WORKLOAD=INFERENCE
