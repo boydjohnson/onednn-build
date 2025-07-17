@@ -1,0 +1,68 @@
+name: Build oneDNN with ACL on Arm64
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: "0 3 * * *" # every day at 3 AM UTC
+
+jobs:
+  build-arm64:
+    name: Build on ubuntu-24.04-arm
+    runs-on: ubuntu-24.04-arm
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            git cmake ninja-build build-essential \
+            python3 python3-pip scons \
+            opencl-headers ocl-icd-opencl-dev
+
+      - name: Build Arm Compute Library (NEON + OpenCL)
+        run: |
+          git clone --depth=1 https://github.com/ARM-software/ComputeLibrary.git
+          cd ComputeLibrary
+          scons arch=arm64 \
+                build=native \
+                opencl=1 \
+                neon=1 \
+                embed_kernels=1 \
+                Werror=0 -j$(nproc)
+          cd ..
+
+      - name: Build oneDNN with ACL backend
+        run: |
+          git clone --depth=1 https://github.com/oneapi-src/oneDNN.git
+          cd oneDNN
+          mkdir build && cd build
+          cmake .. \
+            -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX=/opt/onednn-acl-install \
+            -DDNNL_CPU_RUNTIME=ACL \
+            -DDNNL_AARCH64_USE_ACL=ON \
+            -DDNNL_ENABLE_WORKLOAD=INFERENCE
+          ninja -j$(nproc)
+          sudo ninja install
+
+      - name: Package build artifacts
+        run: |
+          tar czf onednn-acl-arm64.tar.gz -C /opt onednn-acl-install
+
+      - name: Create or update nightly release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: nightly
+          name: "Nightly Build"
+          body: "Automated build of oneDNN with ACL backend for Arm64"
+          draft: false
+          prerelease: true
+          files: onednn-acl-arm64.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
