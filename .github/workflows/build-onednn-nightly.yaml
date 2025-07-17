@@ -48,7 +48,7 @@ jobs:
             -DCMAKE_INSTALL_PREFIX=/opt/onednn-acl-install \
             -DDNNL_CPU_RUNTIME=OMP \
             -DACL_INCLUDE_DIR=../../ComputeLibrary/include/ \
-            -DACL_EXTRA_INCLUDE_DIR=../../ComputeLibrary/include/ \
+            -DACL_EXTRA_INCLUDE_DIR=../../ComputeLibrary/ \
             -DACL_LIBRARY=../../ComputeLibrary/build/libarm_compute-static.a \
             -DDNNL_GPU_RUNTIME=OCL \
             -DDNNL_AARCH64_USE_ACL=ON \
