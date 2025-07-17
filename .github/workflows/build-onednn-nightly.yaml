@@ -33,6 +33,7 @@ jobs:
                 opencl=1 \
                 neon=1 \
                 embed_kernels=1 \
+                graph=1 \
                 Werror=0 -j$(nproc)
           cd ..
 
