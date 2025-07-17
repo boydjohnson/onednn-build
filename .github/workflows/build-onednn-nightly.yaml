@@ -33,7 +33,8 @@ jobs:
                 opencl=1 \
                 neon=1 \
                 embed_kernels=1 \
-                Werror=0 -j$(nproc)
+                Werror=0 -j$(nproc) \
+                src/core/arm_compute_version.embed
           cp src/core/arm_compute_version.embed include/arm_compute_version.embed
           cd ..
 
