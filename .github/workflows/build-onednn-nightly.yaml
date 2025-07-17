@@ -65,7 +65,7 @@ jobs:
       - name: Create or update nightly release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: nightly-{{ steps.date.outputs.date }}
+          tag_name: nightly-${{ steps.date.outputs.date }}
           name: "Nightly Build"
           body: "Automated build of oneDNN with ACL backend for Arm64"
           draft: false
