@@ -53,7 +53,8 @@ jobs:
             -DDNNL_GPU_RUNTIME=OCL \
             -DDNNL_AARCH64_USE_ACL=ON \
             -DACL_GRAPH_LIBRARY="../../ComputeLibrary/build/libarm_compute_graph-static.a" \
-            -DDNNL_ENABLE_WORKLOAD=INFERENCE
+            -DDNNL_ENABLE_WORKLOAD=INFERENCE \
+            -DONEDNN_LIBRARY_TYPE=STATIC
           ninja -j$(nproc)
           sudo ninja install
 
