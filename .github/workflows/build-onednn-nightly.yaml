@@ -71,5 +71,3 @@ jobs:
           draft: false
           prerelease: true
           files: onednn-acl-arm64.tar.gz
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
