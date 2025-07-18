@@ -1,9 +1,11 @@
 name: Build oneDNN with ACL on Arm64
-
+permissions:
+  contents: write
 on:
   push:
     branches: [main]
-  workflow_dispatch:
+  pull_request:
+    types: [opened, synchronize, reopened]
   schedule:
     - cron: "0 3 * * *" # every day at 3 AM UTC
 
@@ -58,16 +60,8 @@ jobs:
           ninja -j$(nproc)
           sudo ninja install
 
-      - name: Package build artifacts
-        run: |
-          tar czf onednn-acl-arm64.tar.gz -C /opt onednn-acl-install
-
-      - name: Create or update nightly release
-        uses: softprops/action-gh-release@v1
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
         with:
-          tag_name: nightly-${{ steps.date.outputs.date }}
-          name: "Nightly Build"
-          body: "Automated build of oneDNN with ACL backend for Arm64"
-          draft: false
-          prerelease: true
-          files: onednn-acl-arm64.tar.gz
+          name: onednn-acl-arm64
+          path: /opt/onednn-acl-install
